@@ -1,0 +1,71 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatToolbarModule,
+  MatInputModule,
+  MatListModule,
+} from '@angular/material';
+import { FormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
+import { ApiService } from './app.service';
+import { AuthService } from './auth.service';
+import { MessagesComponent } from './messages.component';
+import { RegisterComponent } from './register.component';
+import { LoginComponent } from './login.component';
+import { UsersComponent } from './components/userComponent/user.component';
+import { ProfileComponent } from './components/userComponent/profile.component';
+import { PostComponent } from './post.component';
+import { GoogleSigninComponent } from './googleAuth.component';
+import { MircrosoftSigninComponent } from './microsoftAuth.component';
+
+import { AuthInterceptorService } from './authInterceptoer.service';
+
+const routes = [
+  { path: '', component: PostComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'users', component: UsersComponent },
+  { path: 'profile/:id', component: ProfileComponent },
+];
+@NgModule({
+  declarations: [
+    AppComponent,
+    MessagesComponent,
+    RegisterComponent,
+    LoginComponent,
+    UsersComponent,
+    ProfileComponent,
+    PostComponent,
+    GoogleSigninComponent,
+    MircrosoftSigninComponent,
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    MatButtonModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatInputModule,
+    BrowserAnimationsModule,
+    RouterModule.forRoot(routes),
+    FormsModule,
+    MatListModule,
+  ],
+  providers: [
+    ApiService,
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
